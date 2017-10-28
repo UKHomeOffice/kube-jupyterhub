@@ -1,0 +1,10 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hub-db-dir
+spec:
+  accessMode:
+    - ReadWriteOnce
+  resource:
+    requests:
+      storage: "1Gi"

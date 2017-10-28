@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: hub-config
+data:
+  cull.enabled: "true"
+  cull.users: "false"
+  cull.timeout: "3600"
+  cull.every: "600"
+
+  auth.type: "dummy"
+  auth.dummy.password: "dummy"
+
+  hub.concurrent-spawn-limit: "64"
+  hub.base_url: "/"
+
+  hub.db_url: "sqlite:///jupyterhub.splite"
+  
+  admin.access: "true"

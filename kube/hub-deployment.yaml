@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hub-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: hub-pod
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: hub-config
+      - name: secret
+        secret:
+          secretName: hub-secret
+      - name: hub-db-dir
+        persistentVolumeClaim:
+          claimName: hub-db-dir
+      serviceAccountName: hub
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: hub-container
+        image: jupyterhub/k8s-hub:v0.4
+        volumeMounts:
+          - mountPath: /etc/jupyterhub/config/
+            name: config
+          - mountPath: /etc/jupyterhub/secret/
+            name: secret
+          - mountPath: /srv/jupyterhub/
+            name: hub-db-dir
+        resources: 
+          requests:
+            cpu: 0.2
+            memory: 512Mi
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SINGLEUSER_IMAGE
+          value: jupyterhub/k8s-singleuser-sample:v0.4
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONFIGPROXY_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hub-secret
+              key: proxy.token
+        ports:
+          - containerPort: 8081
+            name: hub
