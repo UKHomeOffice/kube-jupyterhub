@@ -38,4 +38,5 @@ kd --insecure-skip-tls-verify \
   -f kube/hub-service.yaml \
   -f kube/proxy-deployment.yaml \
   -f kube/proxy-service.yaml \
-  -f kube/ingress.yaml
+  -f kube/ingress.yaml \
+  -f kube/serviceaccount.yaml
