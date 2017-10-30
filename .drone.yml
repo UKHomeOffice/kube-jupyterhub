@@ -9,7 +9,7 @@ pipeline:
     environment:
       - DRONE_DEPLOY_TO=testing
     commands:
-      - deploy.sh
+      - ./bin/deploy.sh
     when:
       event: push
       branch: master
