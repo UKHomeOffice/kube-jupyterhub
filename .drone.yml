@@ -6,6 +6,7 @@ pipeline:
     secrets:
       - kube_server_acp_testing
       - kube_token_acp_testing
+      - proxy_secret
     environment:
       - DRONE_DEPLOY_TO=testing
     commands:
