@@ -4,8 +4,6 @@ metadata:
   name: hub-deployment
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -21,10 +19,7 @@ spec:
       - name: hub-db-dir
         persistentVolumeClaim:
           claimName: hub-db-dir
-      serviceAccountName: hub
-      securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
+      serviceAccountName: jupyterhub
       containers:
       - name: hub-container
         image: jupyterhub/k8s-hub:v0.4
@@ -35,10 +30,6 @@ spec:
             name: secret
           - mountPath: /srv/jupyterhub/
             name: hub-db-dir
-        resources: 
-          requests:
-            cpu: 0.2
-            memory: 512Mi
         imagePullPolicy: IfNotPresent
         env:
         - name: SINGLEUSER_IMAGE
