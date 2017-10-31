@@ -27,7 +27,7 @@ esac
 echo "--- Kube API URL: ${KUBE_SERVER}"
 echo "--- Kube namespace: ${KUBE_NAMESPACE}"
 
-kubectl --namespace=${KUBE_NAMESPACE} create secret opaque hub-secret \
+kubectl --namespace=${KUBE_NAMESPACE} create secret generic hub-secret \
   --from-literal=proxy.token=${PROXY_SECRET}
 
 kd --insecure-skip-tls-verify \
