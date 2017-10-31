@@ -6,12 +6,12 @@ set -o nounset
 # Currently using the same version tag for all phub services
 export AWS_DSP_TOOLSET_VERSION=v1.2.6
 
-export DRONE_DEPLOY_TO=${DRONE_DEPLOY_TO:-'acp-test'}
+export DRONE_DEPLOY_TO=${DRONE_DEPLOY_TO:-testing}
 
 export TRIGGER_SLEEP_SECONDS=5m
 
 case ${DRONE_DEPLOY_TO} in
-  'acp-test')
+  'testing')
     export KUBE_NAMESPACE=jupyterhub
     export KUBE_SERVER=${KUBE_SERVER_ACP_TESTING}
     export KUBE_TOKEN=${KUBE_TOKEN_ACP_TESTING}
