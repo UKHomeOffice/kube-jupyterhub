@@ -13,8 +13,8 @@ export TRIGGER_SLEEP_SECONDS=5m
 case ${DRONE_DEPLOY_TO} in
   'testing')
     export KUBE_NAMESPACE=jupyterhub
-    export KUBE_SERVER=${KUBE_SERVER_ACP_OPS}
-    export KUBE_TOKEN=${KUBE_TOKEN_ACP_OPS}
+    export KUBE_SERVER=${KUBE_SERVER_ACP_TESTING}
+    export KUBE_TOKEN=${KUBE_TOKEN_ACP_TESTING}
 
     ;;
 
