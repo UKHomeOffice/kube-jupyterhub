@@ -27,7 +27,8 @@ esac
 echo "--- Kube API URL: ${KUBE_SERVER}"
 echo "--- Kube namespace: ${KUBE_NAMESPACE}"
 
-kd --namespace=${KUBE_NAMESPACE} create secret generic hub-secret \
+kubecmd="kubectl --insecure-skip-tls-verify --server ${KUBE_SERVER} --token ${KUBE_TOKEN} --namespace ${KUBE_NAMESPACE}"
+${kubecmd} --namespace=${KUBE_NAMESPACE} create secret generic hub-secret \
   --from-literal=proxy.token=${PROXY_SECRET}
 
 kd --insecure-skip-tls-verify \
