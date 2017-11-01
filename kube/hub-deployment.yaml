@@ -26,12 +26,12 @@ spec:
       - name: hub-container
         image: jupyterhub/k8s-hub:v0.4
         volumeMounts:
-          - mountPath: /etc/jupyterhub/config/
-            name: config
-          - mountPath: /etc/jupyterhub/secret/
-            name: secret
-          - mountPath: /srv/jupyterhub/
-            name: hub-db-dir
+        - mountPath: /etc/jupyterhub/config/
+          name: config
+        - mountPath: /etc/jupyterhub/secret/
+          name: secret
+        - mountPath: /srv/jupyterhub/
+          name: hub-db-dir
         imagePullPolicy: IfNotPresent
         env:
         - name: SINGLEUSER_IMAGE
@@ -45,17 +45,17 @@ spec:
             secretKeyRef:
               name: hub-secret
               key: proxy.token
+        ports:
+        - containerPort: 8081
 
       - name: proxy-container
         image: jupyterhub/configurable-http-proxy:2.0.4
         command:
         - configurable-http-proxy
-        - --ip=127.0.0.1
-        - --port=8000
-        - --api-ip=127.0.0.1
-        - --api-port=8001
-        - --default-target=http://127.0.0.1:8000
-        - --error-target=http://127.0.0.1:8000/hub/error
+        - --ip=0.0.0.0
+        - --api-ip=0.0.0.0
+        - --default-target=http://127.0.0.1:8081
+        - --error-target=http://127.0.0.1:8081/hub/error
         - --log-level=debug
         env:
           - name: CONFIGPROXY_AUTH_TOKEN
