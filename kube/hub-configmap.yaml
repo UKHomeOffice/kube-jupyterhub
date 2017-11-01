@@ -9,6 +9,7 @@ data:
   cull.every: "600"
 
   auth.type: "dummy"
+  auth.password: "admin"
 
   hub.concurrent-spawn-limit: "64"
   hub.base_url: "/"
