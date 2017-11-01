@@ -7,7 +7,8 @@ spec:
   template:
     metadata:
       labels:
-        name: hub-pod
+        name: jupyterhub
+        service: jupyterhub
     spec:
       volumes:
       - name: config
@@ -21,6 +22,7 @@ spec:
           claimName: hub-db-dir
       serviceAccountName: jupyterhub
       containers:
+ 
       - name: hub-container
         image: jupyterhub/k8s-hub:v0.4
         volumeMounts:
@@ -43,6 +45,27 @@ spec:
             secretKeyRef:
               name: hub-secret
               key: proxy.token
+
+      - name: proxy-container
+        image: jupyterhub/configurable-http-proxy:2.0.4
+        command:
+        - configurable-http-proxy
+        - --ip=0.0.0.0
+        - --port=8000
+        - --api-ip=0.0.0.0
+        - --api-port=8001
+        - --default-target=http://127.0.0.1:8081
+        - --error-target=http://127.0.0.1:8081/hub/error
+        - --log-level=debug
+        env:
+          - name: CONFIGPROXY_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: hub-secret
+                key: proxy.token
+        imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8081
-            name: hub
+          - containerPort: 8000
+            name: proxy-public
+          - containerPort: 8001
+            name: api
