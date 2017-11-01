@@ -2,13 +2,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: proxy-deployment
+  name: jupyter-proxy
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: proxy-pod
+        app: jupyter-proxy
     spec:
       containers:
       - name: proxy-container
@@ -19,13 +19,9 @@ spec:
         - --port=8000
         - --api-ip=0.0.0.0
         - --api-port=8001
-        - --default-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)
-        - --error-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)
+        - --default-target=http://127.0.0.1:8081
+        - --error-target=http://127.0.0.1:8081/hub/error
         - --log-level=debug
-        resources:
-          requests:
-            cpu: 0.2
-            memory: 512Mi
         env:
           - name: CONFIGPROXY_AUTH_TOKEN
             valueFrom:
