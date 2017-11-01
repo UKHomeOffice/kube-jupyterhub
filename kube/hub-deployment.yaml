@@ -26,9 +26,9 @@ spec:
       - name: hub-container
         image: jupyterhub/k8s-hub:v0.4
         volumeMounts:
-        - mountPath: /srv/jupyterhub/config/
+        - mountPath: /etc/jupyterhub/config/
           name: config
-        - mountPath: /srv/jupyterhub/secret/
+        - mountPath: /etc/jupyterhub/secret/
           name: secret
         - mountPath: /srv/jupyterhub/
           name: hub-db-dir
