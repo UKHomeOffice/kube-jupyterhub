@@ -34,4 +34,5 @@ kd --insecure-skip-tls-verify \
   -f kube/hub-deployment.yaml \
   -f kube/hub-service.yaml \
   -f kube/hub-ingress.yaml \
-  -f kube/hub-serviceaccount.yaml
+  -f kube/hub-serviceaccount.yaml \
+  -f kube/hub-networkpolicy.yaml

@@ -1,0 +1,16 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ingress-network-policy
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: jupyterhub
+      ports:
+        - protocol: TCP
+          port: 8000
+        - protocol: TCP
+          port: 8001
