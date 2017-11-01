@@ -8,18 +8,18 @@ metadata:
     kubernetes.io/ingress.class: "nginx-internal"
 spec:
   tls:
-    - hosts:
-        - jupyterhub.testing.acp.homeoffice.gov.uk
-        secretName: jupyterhub-tls
+  - hosts:
+    - jupyterhub.testing.acp.homeoffice.gov.uk
+    secretName: jupyterhub-tls
   rules:
-    - host: jupyterhub.testing.acp.homeoffice.gov.uk
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: proxy-public
-              servicePort: 8000
-          - path: /api
-            backend:
-              serviceName: proxy-api
-              servicePort: 8001
+  - host: jupyterhub.testing.acp.homeoffice.gov.uk
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: proxy-public
+            servicePort: 8000
+        - path: /api
+          backend:
+            serviceName: proxy-api
+            servicePort: 8001
