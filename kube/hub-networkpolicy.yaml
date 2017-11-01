@@ -4,6 +4,7 @@ kind: NetworkPolicy
 metadata:
   name: ingress-network-policy
 spec:
+  podSelector:
   ingress:
     - from:
         - namespaceSelector:
