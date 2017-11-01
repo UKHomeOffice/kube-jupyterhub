@@ -9,7 +9,6 @@ data:
   cull.every: "600"
 
   auth.type: "dummy"
-  auth.dummy.password: "dummy"
 
   hub.concurrent-spawn-limit: "64"
   hub.base_url: "/"
@@ -17,3 +16,5 @@ data:
   hub.db_url: "sqlite:///jupyterhub.splite"
   
   admin.access: "true"
+  admin.users: |
+    - "admin"
