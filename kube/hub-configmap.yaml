@@ -1,20 +1,22 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: hub-config
+  name: jupyterhub-config-py
 data:
-  cull.enabled: "true"
-  cull.users: "false"
-  cull.timeout: "3600"
-  cull.every: "600"
-
-  auth.type: "dummy"
-  auth.dummy.password: "admin"
-
-  hub.concurrent-spawn-limit: "64"
-  hub.base_url: "/"
-
-  hub.db_url: "sqlite:///jupyterhub.splite"
-  
-  admin.access: "true"
-  admin.users: "admin"
+  jupyterhub-config.py: |-
+    import os
+    c.JupyterHub.confirm_no_ssl = True
+    c.JupyterHub.db_url = 'sqlite:////tmp/jupyterhub.sqlite'
+    c.JupyterHub.cookie_secret_file = '/tmp/jupyterhub_cookie_secret'
+    c.JupyterHub.authenticator_class = 'oauthenticator.GitHubOAuthenticator'
+    c.GitHubOAuthenticator.client_id = os.environ['GITHUB_CLIENT_ID']
+    c.GitHubOAuthenticator.client_secret = os.environ['GITHUB_CLIENT_SECRET']
+    c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
+    c.JupyterHub.spawner_class = 'kubernetes_spawner.KubernetesSpawner'
+    c.KubernetesSpawner.verify_ssl = False
+    c.KubernetesSpawner.hub_ip_from_service = 'jupyterhub'
+    c.KubernetesSpawner.container_image = 'danielfrg/jupyterhub-kube-ldap-nfs-singleuser:0.1'
+    c.Spawner.default_url = '/lab'
+    c.Spawner.notebook_dir = '/mnt/notebooks/%U'
+    c.KubernetesSpawner.persistent_volume_claim_name = 'jupyterhub-volume'
+    c.KubernetesSpawner.persistent_volume_claim_path = '/mnt'

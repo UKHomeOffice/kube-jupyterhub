@@ -11,44 +11,42 @@ spec:
         service: jupyterhub
     spec:
       volumes:
-      - name: config
-        configMap:
-          name: hub-config
-      - name: secret
-        secret:
-          secretName: hub-secret
-      - name: hub-db-dir
-        persistentVolumeClaim:
-          claimName: hub-db-dir
+        - name: config-volume
+          configMap:
+            name: jupyterhub-config-py
+            items:
+              - key: jupyterhub-config.py
+                path: jupyterhub_config.py
       serviceAccountName: jupyterhub
       containers:
  
-      - name: hub-container
-        image: jupyterhub/k8s-hub:v0.4
-        volumeMounts:
-        - mountPath: /etc/jupyterhub/config/
-          name: config
-        - mountPath: /etc/jupyterhub/secret/
-          name: secret
-        - mountPath: /srv/jupyterhub/
-          name: hub-db-dir
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: SINGLEUSER_IMAGE
-          value: jupyterhub/k8s-singleuser-sample:v0.4
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: CONFIGPROXY_AUTH_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: hub-secret
-              key: proxy.token
+      - name: jupyterhub
+        image: danielfrg/jupyterhub-kube-github-nfs:0.1
         ports:
-        - containerPort: 8081
+          - containerPort: 8081
+        env:
+          - name: CONFIGPROXY_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: configproxy-auth-token
+                name: jupyterhub-secrets
+          - name: GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                key: github-client-id
+                name: jupyterhub-secrets
+          - name: GITHUB_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: github-client-secret
+                name: jupyterhub-secrets
+          - name: OAUTH_CALLBACK_URL
+            value: http://jupyterhub.testing.homeoffice.gov.uk/hub/oauth_callback
+        volumeMounts:
+          - name: config-volume
+            mountPath: "/srv/jupyterhub/"
 
-      - name: proxy-container
+      - name: proxy
         image: jupyterhub/configurable-http-proxy:2.0.4
         command:
         - configurable-http-proxy
