@@ -29,9 +29,6 @@ spec:
             value: http://jupyterhub.testing.homeoffice.gov.uk/hub/oauth_callback        
         ports:
           - containerPort: 8081
-        volumeMounts:
-          - name: config-volume
-            mountPath: "/srv/jupyterhub/"
       - name: proxy
         image: jupyterhub/configurable-http-proxy:2.0.4
         command:
