@@ -37,10 +37,3 @@ spec:
             name: proxy-public
           - containerPort: 8001
             name: api
-      volumes:
-        - name: config-volume
-          configMap:
-            name: jupyterhub-config-py
-            items:
-              - key: jupyterhub-config.py
-                path: jupyterhub_config.py
