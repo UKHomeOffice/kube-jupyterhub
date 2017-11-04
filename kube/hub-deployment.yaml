@@ -12,26 +12,6 @@ spec:
     spec:
       serviceAccountName: jupyterhub
       containers:
-      - name: jupyterhub
-        image: danielfrg/jupyterhub-kube-github-nfs:0.1
-        env:
-          - name: GITHUB_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                key: github-client-id
-                name: jupyterhub-secrets
-          - name: GITHUB_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                key: github-client-secret
-                name: jupyterhub-secrets
-          - name: OAUTH_CALLBACK_URL
-            value: http://jupyterhub.testing.homeoffice.gov.uk/hub/oauth_callback
-        ports:
-          - containerPort: 8081
-        volumeMounts:
-          - name: config-volume
-            mountPath: "/srv/jupyterhub/"
       - name: proxy
         image: jupyterhub/configurable-http-proxy:2.0.4
         command:
