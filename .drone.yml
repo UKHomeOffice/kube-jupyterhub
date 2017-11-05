@@ -9,7 +9,7 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
       - cd jupyterhub/
-      - docker build -t squidproxy:$${DRONE_COMMIT_SHA} .
+      - docker build -t jupyterhub:$${DRONE_COMMIT_SHA} .
 
   latest_image_to_quay:
     image: docker:17.07.0
