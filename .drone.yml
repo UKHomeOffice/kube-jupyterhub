@@ -18,7 +18,7 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
+      - docker login -u="ukhomeofficedigital+jupyterhub" -p=$${DOCKER_PASSWORD} quay.io
       - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:latest
       - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_COMMIT_SHA}
       - docker push quay.io/ukhomeofficedigital/jupyterhub:latest
@@ -34,7 +34,7 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
+      - docker login -u="ukhomeofficedigital+jupyterhub" -p=$${DOCKER_PASSWORD} quay.io
       - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_TAG}
       - docker push quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_TAG}
     when:
