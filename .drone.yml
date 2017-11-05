@@ -9,7 +9,6 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
       - cd jupyterhub/
-      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
       - docker build -t squidproxy:$${DRONE_COMMIT_SHA} .
 
   latest_image_to_quay:
