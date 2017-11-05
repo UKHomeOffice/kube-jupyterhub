@@ -1,6 +1,46 @@
 ---
 pipeline:
 
+  build_docker_image:
+    image: docker:17.07.0
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - cd jupyterhub/
+      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
+      - docker build -t squidproxy:$${DRONE_COMMIT_SHA} .
+
+  latest_image_to_quay:
+    image: docker:17.07.0
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
+      - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:latest
+      - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/jupyterhub:latest
+      - docker push quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_COMMIT_SHA}
+    when:
+      event: push
+      branch: master
+
+  tag_image_to_quay:
+    image: docker:1.12
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+jupyterhub" -p="$${DOCKER_PASSWORD}" quay.io
+      - docker tag jupyterhub:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/jupyterhub:$${DRONE_TAG}
+    when:
+      event: tag
+
   rollout_testing:
     image: quay.io/ukhomeofficedigital/kd:v0.3.1
     secrets:
