@@ -31,8 +31,8 @@ kd --insecure-skip-tls-verify \
   --timeout 10m0s \
   -f kube/hub-configmap.yaml \
   -f kube/hub-pvc.yaml \
+  -f kube/hub-serviceaccount.yaml \
+  -f kube/hub-networkpolicy.yaml \
   -f kube/hub-deployment.yaml \
   -f kube/hub-service.yaml \
-  -f kube/hub-ingress.yaml \
-  -f kube/hub-serviceaccount.yaml \
-  -f kube/hub-networkpolicy.yaml
+  -f kube/hub-ingress.yaml 
