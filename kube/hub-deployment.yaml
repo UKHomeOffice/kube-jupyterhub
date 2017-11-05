@@ -49,8 +49,8 @@ spec:
           - name: CONFIGPROXY_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
-                name: configproxy-auth-token
-                key: jupyterhub-secrets
+                key: configproxy-auth-token
+                name: jupyterhub-secrets
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 8000
