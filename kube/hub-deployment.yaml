@@ -14,6 +14,8 @@ spec:
       containers:
       - name: jupyterhub
         image: quay.io/ukhomeofficedigital/jupyterhub:latest
+        securityContext:
+          runAsNonRoot: true
         env:
           - name: GITHUB_CLIENT_ID
             valueFrom:
@@ -34,6 +36,8 @@ spec:
             mountPath: "/srv/jupyterhub/"
       - name: proxy
         image: jupyterhub/configurable-http-proxy:2.0.4
+        securityContext:
+          runAsNonRoot: true
         command:
         - configurable-http-proxy
         - --ip=0.0.0.0
